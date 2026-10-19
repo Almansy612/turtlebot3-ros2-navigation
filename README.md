@@ -33,6 +33,28 @@ The full autonomous-robot pipeline on a **TurtleBot3 Burger**: build a world, ma
 | 2 | 0.306 | 0.0567 |
 | 3 | 0.799 | −0.339 |
 
+### Maps: full arena vs keep-out zones
+
+![Full map (left) vs keep-out map (right)](images/maps-full-vs-keepout.png)
+
+*Left: full arena map (`map2kareem`). Right: keep-out map (`map3kareemkeepout`).*
+
+Both maps are 0.05 m/cell with origin (−1.45, −1.38) and are in [`maps/`](maps). The keep-out version adds virtual walls that Nav2 plans around, which is how the keep-out-zone task was met without changing the physical arena.
+
+### Run it on the robot
+
+```bash
+# one terminal is enough: the GUI opens the others for you
+source /opt/ros/humble/setup.bash
+export TURTLEBOT3_MODEL=burger
+python3 src/burger_gui.py
+#  Step 1  LAUNCH  → ros2 launch turtlebot3_bringup robot.launch.py          (new terminal)
+#  Step 2  LAUNCH  → ros2 launch turtlebot3_navigation2 navigation2.launch.py map:=<selected map> use_sim_time:=false
+#  Step 3  GO      → unlocks automatically once Nav2 is active
+```
+
+Source: [`src/burger_gui.py`](src/burger_gui.py). Map paths default to this repo's `maps/` folder and can be overridden with the `MAP_FULL` and `MAP_KEEPOUT` environment variables.
+
 ## Simulation: world → SLAM → autonomous navigation
 
 | Gazebo store world | Mapping with LiDAR + teleop |
